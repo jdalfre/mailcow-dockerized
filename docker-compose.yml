@@ -222,6 +222,35 @@ services:
           aliases:
             - sogo
 
+    roundcube-mailcow:
+      image: roundcube/roundcubemail
+      environment:
+        - ROUNDCUBEMAIL_DB_TYPE=mysql
+        - ROUNDCUBEMAIL_DB_NAME=${RC_DBNAME}
+        - ROUNDCUBEMAIL_DB_USER=${DBUSER}
+        - ROUNDCUBEMAIL_DB_PASSWORD=${DBPASS}
+        - ROUNDCUBEMAIL_DEFAULT_HOST=dovecot
+        - ROUNDCUBEMAIL_DEFAULT_PORT=143
+        - ROUNDCUBEMAIL_SMTP_SERVER=tls://postfix
+        - ROUNDCUBEMAIL_SMTP_PORT=587
+        - ROUNDCUBEMAIL_UPLOAD_MAX_FILESIZE=50M
+        - ROUNDCUBEMAIL_PLUGINS=markasjunk,managesieve,password,subscriptions_option,debug_logger,show_additional_headers,easy_unsubscribe
+      dns:
+        - ${IPV4_NETWORK:-172.22.1}.254
+      volumes:
+        - ./data/conf/roundcube/config/defaults.inc.php:/var/www/html/config/defaults.inc.php:z
+        - ./data/conf/roundcube/plugins/password/config.inc.php:/var/www/html/plugins/password/config.inc.php:z
+        - ./data/conf/roundcube/plugins/markasjunk/config.inc.php:/var/www/html/plugins/markasjunk/config.inc.php:z
+        - ./data/conf/roundcube/plugins/managesieve/config.inc.php:/var/www/html/plugins/managesieve/config.inc.php:z
+        - ./data/conf/roundcube/plugins/easy_unsubscribe/config.inc.php:/var/www/html/plugins/easy_unsubscribe/config.inc.php:z
+      labels:
+      restart: always
+      networks:
+        mailcow-network:
+          ipv4_address: ${IPV4_NETWORK:-172.22.1}.247
+          aliases:
+            - roundcube
+
     dovecot-mailcow:
       image: mailcow/dovecot:2.1
       depends_on:

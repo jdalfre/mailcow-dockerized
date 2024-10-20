@@ -257,6 +257,7 @@ MAILCOW_PASS_SCHEME=BLF-CRYPT
 # ------------------------------
 
 DBNAME=mailcow
+RC_DBNAME=roundcube
 DBUSER=mailcow
 
 # Please use long, random alphanumeric strings (A-Za-z0-9)
