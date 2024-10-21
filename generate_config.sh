@@ -597,3 +597,6 @@ else
 fi
 
 detect_bad_asn
+mkdir -p /opt/mailcow-data
+cp -r data /opt/mailcow-data
+
