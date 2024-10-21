@@ -225,16 +225,20 @@ services:
     roundcube-mailcow:
       image: roundcube/roundcubemail
       environment:
-        - ROUNDCUBEMAIL_DB_TYPE=mysql
-        - ROUNDCUBEMAIL_DB_NAME=${RC_DBNAME}
-        - ROUNDCUBEMAIL_DB_USER=${DBUSER}
-        - ROUNDCUBEMAIL_DB_PASSWORD=${DBPASS}
         - ROUNDCUBEMAIL_DEFAULT_HOST=dovecot
         - ROUNDCUBEMAIL_DEFAULT_PORT=143
         - ROUNDCUBEMAIL_SMTP_SERVER=tls://postfix
         - ROUNDCUBEMAIL_SMTP_PORT=587
-        - ROUNDCUBEMAIL_UPLOAD_MAX_FILESIZE=50M
         - ROUNDCUBEMAIL_PLUGINS=markasjunk,managesieve,password,subscriptions_option,show_additional_headers,easy_unsubscribe
+        - ROUNDCUBEMAIL_INSTALL_PLUGINS=1
+        - ROUNDCUBEMAIL_UPLOAD_MAX_FILESIZE=50M
+
+        - ROUNDCUBEMAIL_DB_TYPE=mysql
+        - ROUNDCUBEMAIL_DB_HOST=localhost
+        #- ROUNDCUBEMAIL_DB_PORT=
+        - ROUNDCUBEMAIL_DB_USER=${DBUSER}
+        - ROUNDCUBEMAIL_DB_PASSWORD=${DBPASS}
+        - ROUNDCUBEMAIL_DB_NAME=${RC_DBNAME}
       dns:
         - ${IPV4_NETWORK:-172.22.1}.254
       volumes:
@@ -243,6 +247,7 @@ services:
         # - ./data/conf/roundcube/plugins/password/config.inc.php:/var/www/html/plugins/password/config.inc.php:z
         # - ./data/conf/roundcube/plugins/markasjunk/config.inc.php:/var/www/html/plugins/markasjunk/config.inc.php:z
         # - ./data/conf/roundcube/plugins/managesieve/config.inc.php:/var/www/html/plugins/managesieve/config.inc.php:z
+        - mysql-socket-vol-1:/var/run/mysqld/
       labels:
         ofelia.enabled: "true"
         ofelia.job-exec.roundcube_cleandb.schedule: "@every 168h"
