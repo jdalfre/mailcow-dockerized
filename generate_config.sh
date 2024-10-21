@@ -203,6 +203,7 @@ if [[ ${SKIP_BRANCH} != y ]]; then
   echo "Available Branches:"
   echo "- master branch (stable updates) | default, recommended [1]"
   echo "- nightly branch (unstable updates, testing) | not-production ready [2]"
+  echo "- roundcube Docker branch [3]"
   sleep 1
 
   while [ -z "${MAILCOW_BRANCH}" ]; do
@@ -210,6 +211,9 @@ if [[ ${SKIP_BRANCH} != y ]]; then
     case $branch in
       [2])
         MAILCOW_BRANCH="nightly"
+        ;;
+      [3])
+        MAILCOW_BRANCH="roundcube-docker"
         ;;
       *)
         MAILCOW_BRANCH="master"

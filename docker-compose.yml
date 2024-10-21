@@ -234,16 +234,20 @@ services:
         - ROUNDCUBEMAIL_SMTP_SERVER=tls://postfix
         - ROUNDCUBEMAIL_SMTP_PORT=587
         - ROUNDCUBEMAIL_UPLOAD_MAX_FILESIZE=50M
-        - ROUNDCUBEMAIL_PLUGINS=markasjunk,managesieve,password,subscriptions_option,debug_logger,show_additional_headers,easy_unsubscribe
+        - ROUNDCUBEMAIL_PLUGINS=markasjunk,managesieve,password,subscriptions_option,show_additional_headers,easy_unsubscribe
       dns:
         - ${IPV4_NETWORK:-172.22.1}.254
       volumes:
-        - ./data/conf/roundcube/config/defaults.inc.php:/var/www/html/config/defaults.inc.php:z
-        - ./data/conf/roundcube/plugins/password/config.inc.php:/var/www/html/plugins/password/config.inc.php:z
-        - ./data/conf/roundcube/plugins/markasjunk/config.inc.php:/var/www/html/plugins/markasjunk/config.inc.php:z
-        - ./data/conf/roundcube/plugins/managesieve/config.inc.php:/var/www/html/plugins/managesieve/config.inc.php:z
-        - ./data/conf/roundcube/plugins/easy_unsubscribe/config.inc.php:/var/www/html/plugins/easy_unsubscribe/config.inc.php:z
+        - ./data/assets/roundcube/plugins/easy_unsubscribe:/var/www/html/plugins/easy_unsubscribe:z
+        # - ./data/conf/roundcube/config/defaults.inc.php:/var/www/html/config/defaults.inc.php:z
+        # - ./data/conf/roundcube/plugins/password/config.inc.php:/var/www/html/plugins/password/config.inc.php:z
+        # - ./data/conf/roundcube/plugins/markasjunk/config.inc.php:/var/www/html/plugins/markasjunk/config.inc.php:z
+        # - ./data/conf/roundcube/plugins/managesieve/config.inc.php:/var/www/html/plugins/managesieve/config.inc.php:z
       labels:
+        ofelia.enabled: "true"
+        ofelia.job-exec.roundcube_cleandb.schedule: "@every 168h"
+        ofelia.job-exec.roundcube_cleandb.user: "www-data"
+        ofelia.job-exec.roundcube_cleandb.command: "/bin/bash -c \"[ -f /var/www/html/cleandb.sh ] && /var/www/html/cleandb.sh\""
       restart: always
       networks:
         mailcow-network:
