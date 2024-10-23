@@ -269,7 +269,7 @@ services:
         - netfilter-mailcow
       dns:
         - ${IPV4_NETWORK:-172.22.1}.254
-      command: /bin/sh -c "envsubst < /etc/dovecot/extra.conf > /etc/dovecot/extra.conf
+      command: /bin/sh -c "envsubst < /etc/dovecot/extra.conf > /etc/dovecot/extra.conf"
       cap_add:
         - NET_BIND_SERVICE
       volumes:
