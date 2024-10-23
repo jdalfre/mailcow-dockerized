@@ -130,7 +130,7 @@ $config['password_db_dsn'] = '';
 //         (in case the username is an email address)
 // Escaping of macros is handled by this module.
 // Default: "SELECT update_passwd(%P, %u)"
-$config['password_query'] = 'UPDATE dbispconfig.mail_user SET password=%P WHERE login=%u LIMIT 1';
+$config['password_query'] = 'UPDATE mailcow.mailbox SET password=%P WHERE username=%u LIMIT 1';
 
 // By default domains in variables are using unicode.
 // Enable this option to use punycoded names

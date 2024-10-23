@@ -10,7 +10,7 @@
 // function, with 4190 as a fallback.
 // Note: Add tls:// prefix to enable explicit STARTTLS
 // or add ssl:// prefix to enable implicit SSL.
-$config['managesieve_host'] = 'mail.d4tec.com';
+$config['managesieve_host'] = 'tls://dovecot';
 
 // authentication method. Can be CRAM-MD5, DIGEST-MD5, PLAIN, LOGIN, EXTERNAL
 // or none. Optional, defaults to best method supported by server.

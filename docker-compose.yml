@@ -30,6 +30,7 @@ services:
         - TZ=${TZ}
         - MYSQL_ROOT_PASSWORD=${DBROOT}
         - MYSQL_DATABASE=${DBNAME}
+        - MYSQL_RC_DATABASE=${RC_DBNAME}
         - MYSQL_USER=${DBUSER}
         - MYSQL_PASSWORD=${DBPASS}
         - MYSQL_INITDB_SKIP_TZINFO=1
@@ -229,13 +230,13 @@ services:
         - ROUNDCUBEMAIL_DEFAULT_PORT=143
         - ROUNDCUBEMAIL_SMTP_SERVER=tls://postfix
         - ROUNDCUBEMAIL_SMTP_PORT=587
-        - ROUNDCUBEMAIL_PLUGINS=markasjunk,managesieve,password,subscriptions_option,show_additional_headers,easy_unsubscribe
+        # - ROUNDCUBEMAIL_PLUGINS=markasjunk,managesieve,password,subscriptions_option,show_additional_headers,easy_unsubscribe
         - ROUNDCUBEMAIL_INSTALL_PLUGINS=1
         - ROUNDCUBEMAIL_UPLOAD_MAX_FILESIZE=50M
 
         - ROUNDCUBEMAIL_DB_TYPE=mysql
-        - ROUNDCUBEMAIL_DB_HOST=localhost
-        #- ROUNDCUBEMAIL_DB_PORT=
+        - ROUNDCUBEMAIL_DB_HOST=mysql
+        - ROUNDCUBEMAIL_DB_PORT=3306
         - ROUNDCUBEMAIL_DB_USER=${DBUSER}
         - ROUNDCUBEMAIL_DB_PASSWORD=${DBPASS}
         - ROUNDCUBEMAIL_DB_NAME=${RC_DBNAME}
@@ -680,6 +681,20 @@ services:
       volumes:
         - /var/run/docker.sock:/var/run/docker.sock:ro
         - /lib/modules:/lib/modules:ro
+
+    portainer-mailcow:
+      image: portainer/portainer-ce
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - ./data/conf/portainer:/data
+      restart: always
+      dns:
+        - 172.22.1.254
+      dns_search: mailcow-network
+      networks:
+        mailcow-network:
+          aliases:
+            - portainer
 
 networks:
   mailcow-network:

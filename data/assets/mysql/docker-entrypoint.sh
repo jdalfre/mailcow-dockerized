@@ -151,10 +151,17 @@ if [ "$1" = 'mysqld' -a -z "$wantHelp" ]; then
 			mysql+=( -p"${MYSQL_ROOT_PASSWORD}" )
 		fi
 
+
 		file_env 'MYSQL_DATABASE'
 		if [ "$MYSQL_DATABASE" ]; then
 			echo "CREATE DATABASE IF NOT EXISTS \`$MYSQL_DATABASE\` ;" | "${mysql[@]}"
 			mysql+=( "$MYSQL_DATABASE" )
+		fi
+
+		file_env 'MYSQL_RC_DATABASE'
+		if [ "$MYSQL_RC_DATABASE" ]; then
+			echo "CREATE DATABASE IF NOT EXISTS \`$MYSQL_RC_DATABASE\` ;" | "${mysql[@]}"
+			mysql+=( "$MYSQL_RC_DATABASE" )
 		fi
 
 		file_env 'MYSQL_USER'
@@ -165,6 +172,11 @@ if [ "$1" = 'mysqld' -a -z "$wantHelp" ]; then
 			if [ "$MYSQL_DATABASE" ]; then
 				echo "GRANT ALL ON \`$MYSQL_DATABASE\`.* TO '$MYSQL_USER'@'%' ;" | "${mysql[@]}"
 			fi
+
+			if [ "$MYSQL_RC_DATABASE" ]; then
+				echo "GRANT ALL ON \`$MYSQL_RC_DATABASE\`.* TO '$MYSQL_USER'@'%' ;" | "${mysql[@]}"
+			fi
+
 		fi
 
 		echo
