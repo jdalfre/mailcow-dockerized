@@ -231,6 +231,7 @@ services:
         - ROUNDCUBEMAIL_SMTP_SERVER=tls://postfix
         - ROUNDCUBEMAIL_SMTP_PORT=587
         # - ROUNDCUBEMAIL_PLUGINS=markasjunk,managesieve,password,subscriptions_option,show_additional_headers,easy_unsubscribe
+        - ROUNDCUBEMAIL_REQUEST_PATH=/roundcube
         - ROUNDCUBEMAIL_INSTALL_PLUGINS=1
         - ROUNDCUBEMAIL_UPLOAD_MAX_FILESIZE=50M
 
